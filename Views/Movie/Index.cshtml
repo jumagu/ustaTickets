@@ -1,0 +1,77 @@
+﻿@model IEnumerable<Movie>
+
+@{
+    ViewData["Title"] = "List of Movies";
+}
+
+<div class="row" style="margin-bottom: 5rem;">
+    @foreach (var movie in Model)
+    {
+        <div class="col-md-4 col-xs-6 border-primary mb-3">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white bg-info">
+                            <p>
+                                @movie.Name
+                                <a class="text-white float-end mx-sm-1 my-sm-0">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                                <a class="text-white float-end mx-sm-1 my-sm-0">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a class="text-white float-end mx-sm-1 my-sm-0" asp-action="Details" asp-route-id="@movie.Id">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <img class="card-img-top" src="@movie.ImageURL" alt="@movie.Name">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <p class="card-text small">
+                                @if (movie.Description.Length <= 55)
+                                {
+                                    @movie.Description
+                                }
+                                else
+                                {
+                                    @movie.Description.Substring(0,55)
+                                }...
+                            </p>
+                            <p class="card-text small">
+                                <b>Director: </b>@movie.Director.FullName <br />
+                                <b>Cinema: </b>@movie.Cinema.Name <br />
+                                <b>Category: </b>@movie.MovieCategory <br />
+                                <b>Start Date: </b>@movie.StartDate.ToString(" dd MMM yy") <br />
+                                <b>End Date: </b>@movie.EndDate.ToString(" dd MMM yy") <br />
+                                <b>Status:</b>
+                                @if (DateTime.Now >= movie.StartDate && DateTime.Now <= movie.EndDate)
+                                {
+                                    <span class="badge bg-success text-white">AVAILABLE</span>
+                                }
+                                else if (DateTime.Now > movie.EndDate)
+                                {
+                                    <span class="badge bg-danger text-white">EXPIRED</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary text-white">UPCOMING</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer">
+                            <p class="card-text text-center">
+                                <a class="btn btn-success text-white btn-sm"><i class="bi bi-cart-plus"></i> Add to Cart (Price @movie.Price.ToString("c"))</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
